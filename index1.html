@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shadow Labs | Fitness Supplements</title>
+<style>
+:root{--green:#00d438;--lime:#53ed57;--bg:#050805;--muted:#b9beb9}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:#fff;font-family:Arial,Helvetica,sans-serif}
+button{cursor:pointer;font:inherit}
+.container{width:94%;max-width:1450px;margin:auto}
+section{padding:38px 0}
+.stacks{margin-top:12px;padding:28px;background:radial-gradient(circle at top left,#173b13,#080c07 65%,#0b1b0d);border-radius:20px}
+.heading{text-align:center;margin-bottom:26px}
+.heading-top{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+.popular{background:var(--green);color:#001b06;padding:9px 15px;border-radius:10px;font-size:13px;font-weight:900}
+.heading h1{font-size:clamp(34px,4vw,55px);font-weight:900;letter-spacing:1px}
+.heading p{color:var(--green);margin-top:8px}
+.product-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.product-card{background:#fff;color:#111;border-radius:15px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.product-image{height:205px;padding:12px;background:#f1f1f1;display:flex;align-items:center;justify-content:center}
+.product-image img{width:100%;height:100%;object-fit:contain}
+.product-info{padding:15px;display:flex;flex-direction:column;flex:1}
+.product-info h3{font-size:16px;margin-bottom:10px}
+.product-info p{color:#666;font-size:13px;line-height:1.5;min-height:58px}
+.price-row{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:12px 0 17px}
+.price-row strong{color:red;font-size:17px}.price-row del{color:#999;font-size:12px}
+.price-row span{margin-left:auto;background:#050805;color:#00ed40;border-radius:20px;padding:5px 8px;font-size:11px}
+.product-info button{background:#00cb32;color:#001b06;border:0;border-radius:30px;padding:14px 8px;font-weight:bold;margin-top:auto}
+.product-info button:hover:not(:disabled){background:#53ed57}
+.product-info button:disabled{background:#92df98;color:#777;cursor:not-allowed}
+.hero{min-height:340px;border-radius:20px;position:relative;overflow:hidden;display:flex;align-items:center;padding:35px;background:#102014}
+.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,10,2,.78),rgba(0,10,2,.15)),url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1200&q=85') center/cover}
+.hero-content{position:relative;max-width:350px}
+.hero h2{font-size:clamp(30px,3.4vw,44px);font-weight:900;font-style:italic;line-height:1.08;text-transform:uppercase;margin-bottom:22px}
+.outline-btn{background:transparent;color:var(--green);border:1px solid var(--green);border-radius:30px;padding:13px 19px;font-weight:900}
+.outline-btn:hover{background:var(--green);color:#001b06}
+.top-layout{display:grid;grid-template-columns:minmax(0,2fr) minmax(280px,1fr);gap:18px}
+.transform-section{background:radial-gradient(ellipse at top,#0d1b10,#050806 60%);max-width:none;padding:45px max(4%,calc((100% - 1400px)/2))}
+.section-head{text-align:center;margin-bottom:28px}
+.section-head h2{font-size:clamp(28px,4vw,42px);font-weight:900;font-style:italic}
+.section-head h2 span{color:var(--lime)}
+.section-head p{color:#c4c7c4;margin-top:9px}
+.story-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.story{border:1px solid #24392a;border-radius:22px;padding:7px 12px 16px;background:linear-gradient(145deg,#101512,#090c0a);overflow:hidden}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:6px;height:235px}
+.pair figure{position:relative;overflow:hidden;border-radius:13px;background:#1a211b}
+.pair img{width:100%;height:100%;object-fit:cover}
+.tag{position:absolute;bottom:12px;left:10px;border-radius:8px;background:#151915;padding:6px 10px;font-size:11px;font-weight:900}
+.tag.after{background:var(--lime);color:#07130a}
+.person{display:flex;align-items:center;gap:10px;padding:14px 2px;border-bottom:1px solid #27302a}
+.avatar{width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid #ddd}
+.person strong{display:block;font-size:16px}.person small{color:#aaa;display:block;margin-top:3px}
+.verified{margin-left:auto;color:var(--lime);font-size:11px;white-space:nowrap}
+.story blockquote{color:#dedede;font-size:14px;line-height:1.55;padding:14px 2px 0}
+.compare-wrap{display:grid;grid-template-columns:minmax(240px,.8fr) minmax(0,2.2fr);gap:18px;align-items:stretch}
+.why{border:1px solid #2c6a34;border-radius:22px;background:#07130b;padding:25px;box-shadow:0 0 35px #0b2b1040}
+.eyebrow{display:inline-block;border:1px solid var(--green);color:var(--lime);font-weight:800;font-style:italic;letter-spacing:.8px;padding:8px 12px;border-radius:5px}
+.why h2{font-size:clamp(28px,3vw,38px);font-style:italic;line-height:1.02;margin:15px 0 12px}
+.why h2 span{color:var(--lime)}.why>p{color:#ddd;line-height:1.5;font-size:14px}
+.reason{display:flex;gap:13px;padding:15px 0;border-bottom:1px solid #1b2a1f}
+.reason:last-child{border:0}.reason-icon{border:1px solid var(--green);color:var(--lime);width:44px;height:44px;flex:0 0 44px;border-radius:50%;display:grid;place-items:center;font-size:21px}
+.reason b{font-weight:900;font-size:15px}.reason p{color:#bbb;font-size:13px;line-height:1.4;margin-top:4px}
+.table-box{border:1px solid #202820;border-radius:20px;overflow:hidden}
+table{border-collapse:collapse;width:100%;height:100%;font-size:12px}
+th{font-size:15px;text-transform:uppercase;text-align:left;padding:18px 12px;background:#0a0c0a}
+th:nth-child(2){background:var(--lime);color:#041307;text-align:center}
+td{padding:12px;border-top:1px solid #202420;line-height:1.3}
+td:first-child{color:#eee;width:29%}td:nth-child(2){background:#50e94f;color:#07140a;width:36%}td:nth-child(3){color:#bbb}
+.check,.cross{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;font-weight:900;margin-right:6px}
+.check{background:#07130b;color:var(--lime)}.cross{background:#f43d43;color:white}
+footer{text-align:center;padding:24px;color:#888;border-top:1px solid #172019;font-size:12px}
+#cart-count{display:inline-block;margin-left:12px;color:var(--lime)}
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#0bd63d;color:#041307;padding:13px 22px;border-radius:30px;font-weight:800;box-shadow:0 8px 30px #0009;display:none;z-index:5;max-width:90%;text-align:center}
+@media(max-width:1050px){.top-layout{grid-template-columns:1fr}.hero{min-height:320px}.compare-wrap{grid-template-columns:1fr}.story-grid{gap:12px}.pair{height:200px}}
+@media(max-width:720px){section{padding:24px 0}.stacks{padding:18px 12px}.product-grid{grid-template-columns:1fr}.product-card{display:grid;grid-template-columns:120px 1fr}.product-image{height:100%;min-height:190px}.product-info{padding:12px}.product-info p{min-height:0}.price-row{gap:6px}.story-grid{grid-template-columns:1fr}.pair{height:260px}.table-box{overflow-x:auto}table{min-width:620px}.hero{min-height:360px}.heading h1{font-size:36px}.verified{font-size:10px}}
+</style>
+</head>
+<body>
+<main>
+<section>
+  <div class="top-layout container">
+    <div class="stacks">
+      <div class="heading">
+        <div class="heading-top"><span class="popular">MOST POPULAR</span><h1>VALUE STACKS</h1></div>
+        <p>Better together. More results.</p>
+      </div>
+      <div class="product-grid">
+        <article class="product-card">
+          <div class="product-image"><img src="Screenshot 2026-10-22 205826.png" alt="Shadow Labs Mass Gainer"></div>
+          <div class="product-info"><h3>Mass Builder Stack</h3><p>Your everyday foundation for calorie intake, strength training and muscle growth.</p><div class="price-row"><strong>Rs. 2,099</strong><del>Rs. 2,298</del><span>Save 9%</span></div><button onclick="addToCart('Mass Builder Stack',2099)">ADD TO CART</button></div>
+        </article>
+        <article class="product-card">
+          <div class="product-image"><img src="Screenshot 2026-10-22 205525.png" alt="Shadow Labs Creatine"></div>
+          <div class="product-info"><h3>Strength &amp; Size Stack</h3><p>A training-focused combination for mass, strength and daily performance.</p><div class="price-row"><strong>Rs. 2,499</strong><del>Rs. 2,698</del><span>Save 7%</span></div><button onclick="addToCart('Strength & Size Stack',2499)">ADD TO CART</button></div>
+        </article>
+        <article class="product-card">
+          <div class="product-image"><img src="Screenshot 2026-10-22 205531.png" alt="Shadow Labs Ultimate Bulk"></div>
+          <div class="product-info"><h3>Ultimate Bulk</h3><p>A premium bulking combination for athletes working toward their goals.</p><div class="price-row"><strong>Rs. 2,599</strong><del>Rs. 2,798</del><span>Save 7%</span></div><button disabled>SOLD OUT</button></div>
+        </article>
+      </div>
+    </div>
+    <aside class="hero"><div class="hero-content"><h2>“Consistency creates results”</h2><button class="outline-btn" onclick="document.getElementById('transformations').scrollIntoView({behavior:'smooth'})">EXPLORE STACKS&nbsp; →</button></div></aside>
+  </div>
+</section>
+<section class="transform-section" id="transformations">
+  <div class="section-head"><h2>TRANSFOR<span>MATIONS</span></h2><p>Different goals. Different journeys. Real stories with Shadow Labs.</p></div>
+  <div class="story-grid">
+    <article class="story"><div class="pair"><figure><img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=500&q=80" alt="Before transformation example"><span class="tag">BEFORE</span></figure><figure><img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=500&q=80" alt="After transformation example"><span class="tag after">AFTER</span></figure></div><div class="person"><img class="avatar" src="https://images.unsplash.com/photo-1535713875002-d1d0cf3775f0?auto=format&fit=crop&w=100&q=80" alt=""><div><strong>Aditya</strong><small>22 Years</small></div><span class="verified">● Verified Customer</span></div><blockquote>“I’ve always struggled to build muscle. With consistent training and better nutrition, I’m finally feeling stronger and more confident.”</blockquote></article>
+    <article class="story"><div class="pair"><figure><img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=500&q=80" alt="Before transformation example"><span class="tag">BEFORE</span></figure><figure><img src="https://images.unsplash.com/photo-1534367610401-9f5ed68180aa?auto=format&fit=crop&w=500&q=80" alt="After transformation example"><span class="tag after">AFTER</span></figure></div><div class="person"><img class="avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80" alt=""><div><strong>Karan</strong><small>26 Years</small></div><span class="verified">● Verified Customer</span></div><blockquote>“Gaining size was always difficult for me. Staying consistent with my workouts and nutrition helped me build muscle and make real progress.”</blockquote></article>
+    <article class="story"><div class="pair"><figure><img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=500&q=80" alt="Before transformation example"><span class="tag">BEFORE</span></figure><figure><img src="https://images.unsplash.com/photo-1546483875-ad9014c88eba?auto=format&fit=crop&w=500&q=80" alt="After transformation example"><span class="tag after">AFTER</span></figure></div><div class="person"><img class="avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt=""><div><strong>Priya</strong><small>25 Years</small></div><span class="verified">● Verified Customer</span></div><blockquote>“I feel stronger, fitter, and more confident than ever. Building healthy habits has made the biggest difference in my journey.”</blockquote></article>
+  </div>
+</section>
+<section class="container">
+  <div class="compare-wrap">
+    <aside class="why"><span class="eyebrow">WHY SHADOW LABS</span><h2>MORE THAN<br><span>JUST A LABEL.</span></h2><p>Not all supplements are the same. We go beyond basic formulation to deliver quality, transparency and results.</p>
+      <div class="reason"><div class="reason-icon">♜</div><div><b>Real Science</b><p>Research-backed ingredients with proven benefits.</p></div></div>
+      <div class="reason"><div class="reason-icon">♢</div><div><b>Total Transparency</b><p>No hidden ingredients. Know what’s in the tub.</p></div></div>
+      <div class="reason"><div class="reason-icon">♧</div><div><b>Built for You</b><p>Formulated for performance, trust and long-term impact.</p></div></div>
+    </aside>
+    <div class="table-box"><table><thead><tr><th>Features</th><th>Shadow Labs</th><th>Others</th></tr></thead><tbody>
+      <tr><td>⚗ &nbsp; Formulation Approach</td><td><span class="check">✓</span>Research-backed formulation</td><td><span class="cross">×</span>Often ready-made formulas</td></tr>
+      <tr><td>▤ &nbsp; Ingredient Transparency</td><td><span class="check">✓</span>Fully disclosed ingredients &amp; doses</td><td><span class="cross">×</span>Ingredients and doses not clear</td></tr>
+      <tr><td>♢ &nbsp; Quality Testing</td><td><span class="check">✓</span>Every batch lab tested*</td><td><span class="cross">×</span>Limited or no testing</td></tr>
+      <tr><td>⌕ &nbsp; Batch Traceability</td><td><span class="check">✓</span>Traceable batch numbers*</td><td><span class="cross">×</span>No batch information</td></tr>
+      <tr><td>▥ &nbsp; Research &amp; Development</td><td><span class="check">✓</span>Continuous testing &amp; refinement*</td><td><span class="cross">×</span>Minimal product development</td></tr>
+      <tr><td>♡ &nbsp; Digestive Comfort</td><td><span class="check">✓</span>Designed with digestibility in mind*</td><td><span class="cross">×</span>May cause bloating or discomfort</td></tr>
+      <tr><td>♧ &nbsp; Real Customer Results</td><td><span class="check">✓</span>Customer stories and reviews*</td><td><span class="cross">×</span>Mostly marketing claims</td></tr>
+      <tr><td>▤ &nbsp; Price vs Value</td><td><span class="check">✓</span>Quality-focused value</td><td><span class="cross">×</span>Low cost can mean compromises</td></tr>
+      <tr><td>◎ &nbsp; Brand Purpose</td><td><span class="check">✓</span>Built for performance &amp; community</td><td><span class="cross">×</span>Focused mainly on sales</td></tr>
+    </tbody></table></div>
+  </div>
+  <p style="color:#6f796f;font-size:11px;margin-top:12px">*Verify product and quality claims before publishing.</p>
+</section>
+</main>
+<footer>SHADOW LABS · TRAIN CONSISTENTLY. PROGRESS INTENTIONALLY. <span id="cart-count">Cart: 0 items</span></footer>
+<div id="toast" role="status" aria-live="polite"></div>
+<script>
+let cartCount=0,cartTotal=0;
+function addToCart(name,price){
+ cartCount++;cartTotal+=price;
+ document.getElementById('cart-count').textContent=`Cart: ${cartCount} item${cartCount===1?'':'s'} · Rs. ${cartTotal.toLocaleString('en-IN')}`;
+ const toast=document.getElementById('toast');
+ toast.textContent=`${name} added to cart!`;
+ toast.style.display='block';
+ clearTimeout(window.toastTimer);
+ window.toastTimer=setTimeout(()=>toast.style.display='none',2200);
+}
+</script>
+</body>
+</html>
