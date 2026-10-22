@@ -1,0 +1,104 @@
+{% comment %}
+  Shadow Labs — Customer Transformation Stories
+  Add to a Shopify theme through Online Store > Themes > Edit code > Sections.
+{% endcomment %}
+<section id="sl-transform-{{ section.id }}" class="sl-transform">
+  <div class="sl-transform__inner">
+    {% if section.settings.eyebrow != blank %}<p class="sl-transform__eyebrow">{{ section.settings.eyebrow | escape }}</p>{% endif %}
+    <h2 class="sl-transform__title">{{ section.settings.heading | escape }}</h2>
+    {% if section.settings.subheading != blank %}<div class="sl-transform__intro">{{ section.settings.subheading }}</div>{% endif %}
+    <div class="sl-transform__grid">
+      {% for block in section.blocks %}
+        <article class="sl-transform__card" {{ block.shopify_attributes }}>
+          <div class="sl-transform__photos">
+            <div class="sl-transform__photo">
+              {% if block.settings.before_image != blank %}
+                {{ block.settings.before_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: block.settings.customer_name | escape }}
+              {% else %}
+                <div class="sl-transform__placeholder"><span>BEFORE</span><small>Add before image</small></div>
+              {% endif %}
+              <span class="sl-transform__tag">{{ section.settings.before_label | escape }}</span>
+            </div>
+            <div class="sl-transform__photo">
+              {% if block.settings.after_image != blank %}
+                {{ block.settings.after_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: block.settings.customer_name | escape }}
+              {% else %}
+                <div class="sl-transform__placeholder"><span>AFTER</span><small>Add after image</small></div>
+              {% endif %}
+              <span class="sl-transform__tag sl-transform__tag--after">{{ section.settings.after_label | escape }}</span>
+            </div>
+          </div>
+          <div class="sl-transform__body">
+            {% if block.settings.customer_name != blank %}<h3>{{ block.settings.customer_name | escape }}</h3>{% endif %}
+            {% if block.settings.details != blank %}<p class="sl-transform__details">{{ block.settings.details | escape }}</p>{% endif %}
+            {% if block.settings.quote != blank %}<blockquote>“{{ block.settings.quote | escape }}”</blockquote>{% endif %}
+            {% if block.settings.duration != blank %}<p class="sl-transform__duration">{{ block.settings.duration | escape }}</p>{% endif %}
+          </div>
+        </article>
+      {% else %}
+        <div class="sl-transform__empty">Add transformation story blocks in the theme editor.</div>
+      {% endfor %}
+    </div>
+    {% if section.settings.disclaimer != blank %}<p class="sl-transform__disclaimer">{{ section.settings.disclaimer | escape }}</p>{% endif %}
+  </div>
+</section>
+<style>
+#sl-transform-{{ section.id }}{--sl-accent:{{ section.settings.accent }};--sl-bg:{{ section.settings.background }};--sl-card:{{ section.settings.card_background }};--sl-text:{{ section.settings.text_color }};background:var(--sl-bg);color:var(--sl-text);padding:{{ section.settings.padding_y }}px 24px}
+#sl-transform-{{ section.id }} *{box-sizing:border-box}
+#sl-transform-{{ section.id }} .sl-transform__inner{max-width:{{ section.settings.max_width }}px;margin:auto}
+#sl-transform-{{ section.id }} .sl-transform__eyebrow{text-transform:uppercase;letter-spacing:.16em;color:var(--sl-accent);font-size:12px;font-weight:800;margin:0 0 12px;text-align:center}
+#sl-transform-{{ section.id }} .sl-transform__title{text-align:center;text-transform:uppercase;font-size:clamp(28px,4vw,52px);line-height:1.05;letter-spacing:-.035em;margin:0 auto 14px;font-weight:900}
+#sl-transform-{{ section.id }} .sl-transform__intro{text-align:center;max-width:680px;margin:0 auto 34px;opacity:.78}
+#sl-transform-{{ section.id }} .sl-transform__grid{display:grid;grid-template-columns:repeat({{ section.settings.columns_desktop }},minmax(0,1fr));gap:22px}
+#sl-transform-{{ section.id }} .sl-transform__card{background:var(--sl-card);border-radius:16px;overflow:hidden;border:1px solid rgba(127,127,127,.18)}
+#sl-transform-{{ section.id }} .sl-transform__photos{display:grid;grid-template-columns:1fr 1fr;gap:3px;background:rgba(127,127,127,.12)}
+#sl-transform-{{ section.id }} .sl-transform__photo{position:relative;min-width:0;aspect-ratio:4/5;overflow:hidden;background:#e8e8e8}
+#sl-transform-{{ section.id }} .sl-transform__photo img{width:100%;height:100%;display:block;object-fit:cover}
+#sl-transform-{{ section.id }} .sl-transform__tag{position:absolute;left:10px;top:10px;background:#111;color:#fff;padding:6px 9px;font-size:10px;font-weight:800;letter-spacing:.08em;border-radius:4px}
+#sl-transform-{{ section.id }} .sl-transform__tag--after{background:var(--sl-accent);color:#071007}
+#sl-transform-{{ section.id }} .sl-transform__placeholder{height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;color:#333;gap:6px}
+#sl-transform-{{ section.id }} .sl-transform__placeholder span{font-weight:900;letter-spacing:.12em}
+#sl-transform-{{ section.id }} .sl-transform__placeholder small{font-size:11px}
+#sl-transform-{{ section.id }} .sl-transform__body{padding:20px}
+#sl-transform-{{ section.id }} .sl-transform__body h3{font-size:20px;margin:0 0 6px;font-weight:850}
+#sl-transform-{{ section.id }} .sl-transform__details{font-size:12px;opacity:.65;margin:0 0 14px}
+#sl-transform-{{ section.id }} blockquote{font-size:14px;line-height:1.6;margin:0 0 14px}
+#sl-transform-{{ section.id }} .sl-transform__duration{color:var(--sl-accent);font-size:12px;font-weight:800;margin:0}
+#sl-transform-{{ section.id }} .sl-transform__disclaimer{text-align:center;opacity:.55;font-size:11px;margin:24px 0 0}
+#sl-transform-{{ section.id }} .sl-transform__empty{grid-column:1/-1;text-align:center;padding:40px;border:1px dashed #777;border-radius:12px}
+@media(max-width:900px){#sl-transform-{{ section.id }} .sl-transform__grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){#sl-transform-{{ section.id }}{padding:{{ section.settings.padding_y | times: 0.65 | round }}px 16px}#sl-transform-{{ section.id }} .sl-transform__grid{grid-template-columns:1fr;gap:16px}#sl-transform-{{ section.id }} .sl-transform__body{padding:16px}}
+</style>
+{% schema %}
+{
+  "name": "SL Transformation stories",
+  "tag": "section",
+  "class": "section-sl-transformation",
+  "settings": [
+    {"type":"text","id":"eyebrow","label":"Eyebrow","default":"Real people. Real progress."},
+    {"type":"text","id":"heading","label":"Heading","default":"Transformation stories"},
+    {"type":"richtext","id":"subheading","label":"Subheading","default":"<p>Meet the community putting in the work.</p>"},
+    {"type":"text","id":"before_label","label":"Before label","default":"BEFORE"},
+    {"type":"text","id":"after_label","label":"After label","default":"AFTER"},
+    {"type":"text","id":"disclaimer","label":"Disclaimer","default":"Individual results vary. Progress depends on training, nutrition, consistency and other factors."},
+    {"type":"color","id":"accent","label":"Accent color","default":"#00d438"},
+    {"type":"color","id":"background","label":"Section background","default":"#080d08"},
+    {"type":"color","id":"card_background","label":"Card background","default":"#111711"},
+    {"type":"color","id":"text_color","label":"Text color","default":"#ffffff"},
+    {"type":"range","id":"columns_desktop","label":"Desktop columns","min":1,"max":4,"step":1,"default":3},
+    {"type":"range","id":"padding_y","label":"Vertical spacing","min":20,"max":120,"step":4,"unit":"px","default":64},
+    {"type":"range","id":"max_width","label":"Content max width","min":900,"max":1600,"step":50,"unit":"px","default":1300}
+  ],
+  "blocks": [
+    {"type":"story","name":"Transformation story","settings":[
+      {"type":"image_picker","id":"before_image","label":"Before image"},
+      {"type":"image_picker","id":"after_image","label":"After image"},
+      {"type":"text","id":"customer_name","label":"Customer name","default":"Customer name"},
+      {"type":"text","id":"details","label":"Customer details","default":"Training journey"},
+      {"type":"textarea","id":"quote","label":"Testimonial","default":"Consistency made the difference. I focused on my routine and kept showing up."},
+      {"type":"text","id":"duration","label":"Duration or milestone","default":"12-WEEK JOURNEY"}
+    ]}
+  ],
+  "presets":[{"name":"SL Transformation stories","blocks":[{"type":"story"},{"type":"story"},{"type":"story"}]}]
+}
+{% endschema %}

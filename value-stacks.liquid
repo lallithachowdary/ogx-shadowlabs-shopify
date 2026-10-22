@@ -1,0 +1,153 @@
+{% comment %} Shadow Labs — Value Stacks. Product cards can use selected Shopify products. {% endcomment %}
+<section id="sl-value-{{ section.id }}" class="sl-value">
+  <div class="sl-value__layout">
+    <div class="sl-value__main">
+      <header class="sl-value__header">
+        {% if section.settings.badge != blank %}<span class="sl-value__badge">{{ section.settings.badge | escape }}</span>{% endif %}
+        <h2>{{ section.settings.heading | escape }}</h2>
+        {% if section.settings.subheading != blank %}<p>{{ section.settings.subheading | escape }}</p>{% endif %}
+      </header>
+      <div class="sl-value__grid">
+        {% for block in section.blocks %}
+          {% assign product = block.settings.product %}
+          <article class="sl-value__card" {{ block.shopify_attributes }}>
+            <a class="sl-value__image" href="{% if product != blank %}{{ product.url }}{% else %}{{ block.settings.custom_link | default: routes.all_products_collection_url }}{% endif %}" aria-label="{% if product != blank %}{{ product.title | escape }}{% else %}{{ block.settings.title | escape }}{% endif %}">
+              {% if product != blank and product.featured_image != blank %}
+                {{ product.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: product.title }}
+              {% elsif block.settings.custom_image != blank %}
+                {{ block.settings.custom_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: block.settings.title | escape }}
+              {% else %}
+                <div class="sl-value__placeholder"><span>SHADOW LABS</span><strong>{{ block.settings.title | escape }}</strong><small>Add product image</small></div>
+              {% endif %}
+            </a>
+            <div class="sl-value__body">
+              <h3>{% if product != blank %}{{ product.title | escape }}{% else %}{{ block.settings.title | escape }}{% endif %}</h3>
+              {% if block.settings.description != blank %}<p class="sl-value__description">{{ block.settings.description | escape }}</p>{% elsif product != blank and product.description != blank %}<p class="sl-value__description">{{ product.description | strip_html | truncate: 115 }}</p>{% endif %}
+              <div class="sl-value__pricing">
+                {% if product != blank %}
+                  <strong>{{ product.price | money }}</strong>
+                  {% if product.compare_at_price > product.price %}<s>{{ product.compare_at_price | money }}</s>{% endif %}
+                  {% if product.compare_at_price > product.price %}{% assign saving = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round %}<span class="sl-value__save">Save {{ saving }}%</span>{% endif %}
+                {% else %}
+                  {% if block.settings.price != blank %}<strong>{{ block.settings.price | escape }}</strong>{% endif %}
+                  {% if block.settings.compare_price != blank %}<s>{{ block.settings.compare_price | escape }}</s>{% endif %}
+                  {% if block.settings.discount_label != blank %}<span class="sl-value__save">{{ block.settings.discount_label | escape }}</span>{% endif %}
+                {% endif %}
+              </div>
+              {% assign available = true %}
+              {% if product != blank %}{% assign available = product.available %}{% endif %}
+              {% if block.settings.sold_out or available == false %}
+                <button class="sl-value__button sl-value__button--sold" type="button" disabled>{{ block.settings.sold_out_label | escape }}</button>
+              {% elsif product != blank %}
+                {% if section.settings.add_to_cart %}
+                  {% form 'product', product, class: 'sl-value__form' %}
+                    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                    <button class="sl-value__button" type="submit" {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>{{ block.settings.button_label | escape }}</button>
+                  {% endform %}
+                {% else %}
+                  <a class="sl-value__button" href="{{ product.url }}">{{ block.settings.button_label | escape }}</a>
+                {% endif %}
+              {% else %}
+                <a class="sl-value__button" href="{{ block.settings.custom_link | default: routes.all_products_collection_url }}">{{ block.settings.button_label | escape }}</a>
+              {% endif %}
+            </div>
+          </article>
+        {% else %}
+          <p class="sl-value__empty">Add product bundle blocks in the theme editor.</p>
+        {% endfor %}
+      </div>
+    </div>
+    {% if section.settings.show_promo %}
+      <aside class="sl-value__promo">
+        {% if section.settings.promo_image != blank %}
+          {{ section.settings.promo_image | image_url: width: 1200 | image_tag: loading: 'lazy', alt: section.settings.promo_heading | escape }}
+        {% endif %}
+        <div class="sl-value__promo-content">
+          {% if section.settings.promo_heading != blank %}<h3>{{ section.settings.promo_heading | escape }}</h3>{% endif %}
+          {% if section.settings.promo_button_label != blank and section.settings.promo_button_link != blank %}<a href="{{ section.settings.promo_button_link }}">{{ section.settings.promo_button_label | escape }} <span aria-hidden="true">→</span></a>{% endif %}
+        </div>
+      </aside>
+    {% endif %}
+  </div>
+</section>
+<style>
+#sl-value-{{ section.id }}{--sv-accent:{{ section.settings.accent }};--sv-bg:{{ section.settings.background }};--sv-panel:{{ section.settings.panel_background }};--sv-text:{{ section.settings.text_color }};background:var(--sv-bg);color:var(--sv-text);padding:{{ section.settings.padding_y }}px 24px}
+#sl-value-{{ section.id }} *{box-sizing:border-box}
+#sl-value-{{ section.id }} .sl-value__layout{max-width:{{ section.settings.max_width }}px;margin:auto;display:grid;grid-template-columns:minmax(0,2fr) minmax(260px,1fr);gap:22px;align-items:stretch}
+#sl-value-{{ section.id }} .sl-value__main{min-width:0;background:radial-gradient(ellipse at top left,{{ section.settings.glow_color }},transparent 65%),var(--sv-panel);border-radius:24px;padding:30px}
+#sl-value-{{ section.id }} .sl-value__header{text-align:center;margin:0 0 30px}
+#sl-value-{{ section.id }} .sl-value__badge{display:inline-block;background:var(--sv-accent);color:#031006;border-radius:999px;padding:9px 17px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;margin:0 0 12px}
+#sl-value-{{ section.id }} .sl-value__header h2{font-size:clamp(30px,4vw,56px);line-height:1;text-transform:uppercase;font-weight:950;letter-spacing:-.04em;margin:0}
+#sl-value-{{ section.id }} .sl-value__header p{color:var(--sv-accent);margin:12px 0 0}
+#sl-value-{{ section.id }} .sl-value__grid{display:grid;grid-template-columns:repeat({{ section.settings.columns_desktop }},minmax(0,1fr));gap:16px}
+#sl-value-{{ section.id }} .sl-value__card{background:#fff;color:#111;border-radius:17px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+#sl-value-{{ section.id }} .sl-value__image{display:block;aspect-ratio:1/1;max-height:245px;background:#f1f1f1;overflow:hidden;text-decoration:none}
+#sl-value-{{ section.id }} .sl-value__image img{width:100%;height:100%;object-fit:contain;display:block}
+#sl-value-{{ section.id }} .sl-value__placeholder{height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:18px;gap:8px;color:#151515;background:#f3f3f3}
+#sl-value-{{ section.id }} .sl-value__placeholder span{font-size:10px;font-weight:900;letter-spacing:.12em}
+#sl-value-{{ section.id }} .sl-value__placeholder strong{font-size:20px;text-transform:uppercase}
+#sl-value-{{ section.id }} .sl-value__placeholder small{font-size:11px;opacity:.6}
+#sl-value-{{ section.id }} .sl-value__body{padding:17px;display:flex;flex:1;flex-direction:column}
+#sl-value-{{ section.id }} .sl-value__body h3{font-size:16px;line-height:1.25;margin:0 0 12px;font-weight:850}
+#sl-value-{{ section.id }} .sl-value__description{font-size:13px;line-height:1.55;color:#626262;margin:0 0 18px}
+#sl-value-{{ section.id }} .sl-value__pricing{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:auto 0 16px;padding-top:6px}
+#sl-value-{{ section.id }} .sl-value__pricing strong{font-size:18px;color:#f00}
+#sl-value-{{ section.id }} .sl-value__pricing s{font-size:12px;color:#888}
+#sl-value-{{ section.id }} .sl-value__save{background:#050805;color:var(--sv-accent);font-size:11px;padding:6px 9px;border-radius:999px;margin-left:auto;white-space:nowrap}
+#sl-value-{{ section.id }} .sl-value__button{display:flex;justify-content:center;align-items:center;width:100%;border:0;border-radius:999px;background:var(--sv-accent);color:#061008;padding:15px 12px;font:inherit;font-weight:900;text-transform:uppercase;text-decoration:none;cursor:pointer;min-height:48px}
+#sl-value-{{ section.id }} .sl-value__button:hover{filter:brightness(.94)}
+#sl-value-{{ section.id }} .sl-value__button--sold{background:#91df9b;color:#657c67;cursor:not-allowed}
+#sl-value-{{ section.id }} .sl-value__form{margin-top:auto}
+#sl-value-{{ section.id }} .sl-value__promo{position:relative;min-height:100%;border-radius:24px;overflow:hidden;background:#202820;display:flex;align-items:center}
+#sl-value-{{ section.id }} .sl-value__promo>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#sl-value-{{ section.id }} .sl-value__promo:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.7),rgba(0,0,0,.25))}
+#sl-value-{{ section.id }} .sl-value__promo-content{position:relative;z-index:1;padding:clamp(24px,3vw,48px)}
+#sl-value-{{ section.id }} .sl-value__promo-content h3{font-size:clamp(26px,3vw,48px);line-height:1.08;text-transform:uppercase;font-style:italic;font-weight:950;margin:0 0 26px}
+#sl-value-{{ section.id }} .sl-value__promo-content a{display:inline-block;color:var(--sv-accent);border:1px solid var(--sv-accent);border-radius:999px;padding:13px 18px;font-weight:900;text-decoration:none;text-transform:uppercase}
+#sl-value-{{ section.id }} .sl-value__empty{grid-column:1/-1;text-align:center;padding:30px;border:1px dashed #888}
+@media(max-width:1000px){#sl-value-{{ section.id }} .sl-value__layout{grid-template-columns:1fr}#sl-value-{{ section.id }} .sl-value__promo{min-height:320px}}
+@media(max-width:650px){#sl-value-{{ section.id }}{padding:{{ section.settings.padding_y | times: 0.65 | round }}px 12px}#sl-value-{{ section.id }} .sl-value__main{padding:18px 12px;border-radius:18px}#sl-value-{{ section.id }} .sl-value__grid{grid-template-columns:repeat({{ section.settings.columns_mobile }},minmax(0,1fr));gap:10px}#sl-value-{{ section.id }} .sl-value__body{padding:12px}#sl-value-{{ section.id }} .sl-value__body h3{font-size:14px}#sl-value-{{ section.id }} .sl-value__description{font-size:12px}#sl-value-{{ section.id }} .sl-value__pricing strong{font-size:15px}#sl-value-{{ section.id }} .sl-value__save{font-size:10px}#sl-value-{{ section.id }} .sl-value__button{font-size:11px;padding:12px 6px;min-height:42px}}
+</style>
+{% schema %}
+{
+  "name":"SL Value stacks",
+  "tag":"section",
+  "class":"section-sl-value-stacks",
+  "settings":[
+    {"type":"text","id":"badge","label":"Badge","default":"Most popular"},
+    {"type":"text","id":"heading","label":"Heading","default":"Value stacks"},
+    {"type":"text","id":"subheading","label":"Subheading","default":"Better together. More results."},
+    {"type":"checkbox","id":"add_to_cart","label":"Use add-to-cart form for selected products","default":true},
+    {"type":"checkbox","id":"show_promo","label":"Show promotional panel","default":true},
+    {"type":"image_picker","id":"promo_image","label":"Promotional background image"},
+    {"type":"text","id":"promo_heading","label":"Promotional heading","default":"Consistency creates results"},
+    {"type":"text","id":"promo_button_label","label":"Promotional button label","default":"Explore stacks"},
+    {"type":"url","id":"promo_button_link","label":"Promotional button link"},
+    {"type":"color","id":"accent","label":"Accent color","default":"#00d438"},
+    {"type":"color","id":"background","label":"Section background","default":"#050805"},
+    {"type":"color","id":"panel_background","label":"Cards panel background","default":"#091409"},
+    {"type":"color","id":"text_color","label":"Text color","default":"#ffffff"},
+    {"type":"color","id":"glow_color","label":"Green glow","default":"#183a18"},
+    {"type":"range","id":"columns_desktop","label":"Desktop product columns","min":1,"max":3,"step":1,"default":3},
+    {"type":"select","id":"columns_mobile","label":"Mobile product columns","options":[{"value":"1","label":"One"},{"value":"2","label":"Two"}],"default":"1"},
+    {"type":"range","id":"padding_y","label":"Vertical spacing","min":20,"max":120,"step":4,"unit":"px","default":52},
+    {"type":"range","id":"max_width","label":"Content max width","min":1000,"max":1800,"step":50,"unit":"px","default":1600}
+  ],
+  "blocks":[
+    {"type":"bundle","name":"Value stack product","settings":[
+      {"type":"product","id":"product","label":"Shopify product"},
+      {"type":"image_picker","id":"custom_image","label":"Fallback image"},
+      {"type":"text","id":"title","label":"Fallback title","default":"Shadow Labs Mass Gainer"},
+      {"type":"textarea","id":"description","label":"Card description","default":"Your everyday foundation for calorie intake, strength training and muscle growth."},
+      {"type":"text","id":"price","label":"Fallback price","default":"Rs. 2,099"},
+      {"type":"text","id":"compare_price","label":"Fallback compare-at price","default":"Rs. 2,298"},
+      {"type":"text","id":"discount_label","label":"Fallback discount label","default":"Save 9%"},
+      {"type":"checkbox","id":"sold_out","label":"Show as sold out when no product is selected","default":false},
+      {"type":"text","id":"sold_out_label","label":"Sold out label","default":"Sold out"},
+      {"type":"text","id":"button_label","label":"Button label","default":"Add to cart"},
+      {"type":"url","id":"custom_link","label":"Fallback product link"}
+    ]}
+  ],
+  "presets":[{"name":"SL Value stacks","blocks":[{"type":"bundle"},{"type":"bundle"},{"type":"bundle"}]}]
+}
+{% endschema %}

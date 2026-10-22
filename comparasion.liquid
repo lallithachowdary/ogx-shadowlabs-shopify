@@ -1,0 +1,94 @@
+{% comment %} Shadow Labs — Product comparison section {% endcomment %}
+<section id="sl-compare-{{ section.id }}" class="sl-compare">
+  <div class="sl-compare__inner">
+    {% if section.settings.eyebrow != blank %}<p class="sl-compare__eyebrow">{{ section.settings.eyebrow | escape }}</p>{% endif %}
+    <h2>{{ section.settings.heading | escape }}</h2>
+    {% if section.settings.subheading != blank %}<div class="sl-compare__intro">{{ section.settings.subheading }}</div>{% endif %}
+    <div class="sl-compare__table-wrap">
+      <table class="sl-compare__table">
+        <thead><tr>
+          <th scope="col" class="sl-compare__feature-head">{{ section.settings.feature_heading | escape }}</th>
+          <th scope="col" class="sl-compare__brand-head"><span>{{ section.settings.brand_name | escape }}</span>{% if section.settings.brand_note != blank %}<small>{{ section.settings.brand_note | escape }}</small>{% endif %}</th>
+          <th scope="col">{{ section.settings.competitor_one | escape }}</th>
+          <th scope="col">{{ section.settings.competitor_two | escape }}</th>
+        </tr></thead>
+        <tbody>
+          {% for block in section.blocks %}
+            <tr {{ block.shopify_attributes }}>
+              <th scope="row">{{ block.settings.feature | escape }}</th>
+              <td class="sl-compare__ours">{% if block.settings.ours %}<span class="sl-compare__yes" aria-label="Included">✓</span>{% else %}<span class="sl-compare__no" aria-label="Not included">—</span>{% endif %}{% if block.settings.ours_text != blank %}<small>{{ block.settings.ours_text | escape }}</small>{% endif %}</td>
+              <td>{% if block.settings.competitor_one_value %}<span class="sl-compare__yes" aria-label="Included">✓</span>{% else %}<span class="sl-compare__no" aria-label="Not included">—</span>{% endif %}{% if block.settings.competitor_one_text != blank %}<small>{{ block.settings.competitor_one_text | escape }}</small>{% endif %}</td>
+              <td>{% if block.settings.competitor_two_value %}<span class="sl-compare__yes" aria-label="Included">✓</span>{% else %}<span class="sl-compare__no" aria-label="Not included">—</span>{% endif %}{% if block.settings.competitor_two_text != blank %}<small>{{ block.settings.competitor_two_text | escape }}</small>{% endif %}</td>
+            </tr>
+          {% else %}
+            <tr><td colspan="4" class="sl-compare__empty">Add comparison feature blocks in the theme editor.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% if section.settings.footnote != blank %}<p class="sl-compare__footnote">{{ section.settings.footnote | escape }}</p>{% endif %}
+    {% if section.settings.button_label != blank and section.settings.button_link != blank %}<a class="sl-compare__cta" href="{{ section.settings.button_link }}">{{ section.settings.button_label | escape }} <span aria-hidden="true">→</span></a>{% endif %}
+  </div>
+</section>
+<style>
+#sl-compare-{{ section.id }}{--sc-accent:{{ section.settings.accent }};--sc-bg:{{ section.settings.background }};--sc-text:{{ section.settings.text_color }};background:var(--sc-bg);color:var(--sc-text);padding:{{ section.settings.padding_y }}px 24px}
+#sl-compare-{{ section.id }} *{box-sizing:border-box}
+#sl-compare-{{ section.id }} .sl-compare__inner{max-width:{{ section.settings.max_width }}px;margin:auto}
+#sl-compare-{{ section.id }} .sl-compare__eyebrow{text-align:center;text-transform:uppercase;letter-spacing:.16em;color:var(--sc-accent);font-weight:800;font-size:12px;margin:0 0 12px}
+#sl-compare-{{ section.id }} h2{text-align:center;text-transform:uppercase;font-size:clamp(28px,4vw,52px);font-weight:900;line-height:1.05;letter-spacing:-.035em;margin:0 0 14px}
+#sl-compare-{{ section.id }} .sl-compare__intro{text-align:center;max-width:650px;margin:0 auto 32px;opacity:.75}
+#sl-compare-{{ section.id }} .sl-compare__table-wrap{overflow-x:auto;border:1px solid rgba(255,255,255,.12);border-radius:14px}
+#sl-compare-{{ section.id }} .sl-compare__table{width:100%;border-collapse:collapse;min-width:620px;background:rgba(255,255,255,.025)}
+#sl-compare-{{ section.id }} th,#sl-compare-{{ section.id }} td{padding:17px 20px;text-align:center;border-bottom:1px solid rgba(255,255,255,.12);font-size:14px}
+#sl-compare-{{ section.id }} thead th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.06)}
+#sl-compare-{{ section.id }} .sl-compare__feature-head{text-align:left;width:34%}
+#sl-compare-{{ section.id }} tbody th{text-align:left;font-weight:650}
+#sl-compare-{{ section.id }} .sl-compare__brand-head,#sl-compare-{{ section.id }} .sl-compare__ours{background:{{ section.settings.highlight_background }}}
+#sl-compare-{{ section.id }} .sl-compare__brand-head span{display:block;color:var(--sc-accent);font-size:14px}
+#sl-compare-{{ section.id }} .sl-compare__brand-head small,#sl-compare-{{ section.id }} td small{display:block;font-size:11px;opacity:.7;margin-top:5px;font-weight:400}
+#sl-compare-{{ section.id }} .sl-compare__yes{color:var(--sc-accent);font-weight:900;font-size:22px}
+#sl-compare-{{ section.id }} .sl-compare__no{opacity:.45;font-size:20px}
+#sl-compare-{{ section.id }} .sl-compare__footnote{text-align:center;font-size:11px;opacity:.55;margin:18px 0}
+#sl-compare-{{ section.id }} .sl-compare__cta{display:table;margin:24px auto 0;padding:13px 22px;border:1px solid var(--sc-accent);border-radius:999px;color:var(--sc-accent);font-weight:800;text-decoration:none;text-transform:uppercase}
+#sl-compare-{{ section.id }} .sl-compare__cta:hover{background:var(--sc-accent);color:#071007}
+#sl-compare-{{ section.id }} .sl-compare__empty{text-align:center}
+@media(max-width:600px){#sl-compare-{{ section.id }}{padding:{{ section.settings.padding_y | times: 0.65 | round }}px 14px}#sl-compare-{{ section.id }} th,#sl-compare-{{ section.id }} td{padding:13px 12px}}
+</style>
+{% schema %}
+{
+  "name":"SL Product comparison",
+  "tag":"section",
+  "class":"section-sl-comparison",
+  "settings":[
+    {"type":"text","id":"eyebrow","label":"Eyebrow","default":"Know what you get"},
+    {"type":"text","id":"heading","label":"Heading","default":"The Shadow Labs difference"},
+    {"type":"richtext","id":"subheading","label":"Subheading","default":"<p>Compare the features that matter to your routine.</p>"},
+    {"type":"text","id":"feature_heading","label":"Feature column heading","default":"Features"},
+    {"type":"text","id":"brand_name","label":"Your brand name","default":"SHADOW LABS"},
+    {"type":"text","id":"brand_note","label":"Brand note","default":"OUR STANDARD"},
+    {"type":"text","id":"competitor_one","label":"Competitor one heading","default":"TYPICAL BRAND A"},
+    {"type":"text","id":"competitor_two","label":"Competitor two heading","default":"TYPICAL BRAND B"},
+    {"type":"text","id":"footnote","label":"Footnote","default":"Comparison is illustrative. Update feature claims to reflect verified product information."},
+    {"type":"text","id":"button_label","label":"Button label","default":"Explore products"},
+    {"type":"url","id":"button_link","label":"Button link"},
+    {"type":"color","id":"accent","label":"Accent color","default":"#00d438"},
+    {"type":"color","id":"background","label":"Section background","default":"#080d08"},
+    {"type":"color","id":"text_color","label":"Text color","default":"#ffffff"},
+    {"type":"color","id":"highlight_background","label":"Brand column background","default":"#142317"},
+    {"type":"range","id":"padding_y","label":"Vertical spacing","min":20,"max":120,"step":4,"unit":"px","default":64},
+    {"type":"range","id":"max_width","label":"Content max width","min":900,"max":1600,"step":50,"unit":"px","default":1200}
+  ],
+  "blocks":[
+    {"type":"feature","name":"Feature row","settings":[
+      {"type":"text","id":"feature","label":"Feature","default":"Transparent ingredients"},
+      {"type":"checkbox","id":"ours","label":"Shadow Labs has this feature","default":true},
+      {"type":"text","id":"ours_text","label":"Shadow Labs note"},
+      {"type":"checkbox","id":"competitor_one_value","label":"Competitor one has this feature","default":false},
+      {"type":"text","id":"competitor_one_text","label":"Competitor one note"},
+      {"type":"checkbox","id":"competitor_two_value","label":"Competitor two has this feature","default":false},
+      {"type":"text","id":"competitor_two_text","label":"Competitor two note"}
+    ]}
+  ],
+  "presets":[{"name":"SL Product comparison","blocks":[{"type":"feature"},{"type":"feature"},{"type":"feature"},{"type":"feature"}]}]
+}
+{% endschema %}
